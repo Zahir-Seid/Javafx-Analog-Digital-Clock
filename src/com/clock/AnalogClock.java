@@ -26,7 +26,7 @@ import javafx.util.Duration;
 import java.time.format.DateTimeFormatter;
 public class AnalogClock {
 
-    private static final double START_RADIUS = 500;
+    private static final double START_RADIUS = 350;
     private static final int NO_HOUR_TICKS = 12;
     private static final int NO_MINUTE_TICKS = 60;
     private final AnalogClockwork clockwork;
@@ -68,14 +68,14 @@ public class AnalogClock {
         // Create a timeline to update the clock every second
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
-                    // Update the digital clock text
-                    digitalClock.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+                    digitalClock.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss a")));
 
                     // Position the digital clock inside the circle based on current time
                     double digitalClockOffsetY = LocalDateTime.now().getMinute() >= 28 && LocalDateTime.now().getMinute() <= 33
                             || LocalDateTime.now().getHour() % 12 >= 2 && LocalDateTime.now().getHour() % 12 <= 3
-                            ? -200
-                            : 200;
+                            ? -0.4 * START_RADIUS
+                            : 0.4 * START_RADIUS;
                     double digitalClockWidth = digitalClock.getBoundsInLocal().getWidth() + 20; // Add padding
                     double digitalClockHeight = digitalClock.getBoundsInLocal().getHeight() + 10; // Add padding
                     double boxLayoutX = START_RADIUS - digitalClockWidth / 2;
@@ -95,7 +95,6 @@ public class AnalogClock {
 
         return clockGroup;
     }
-
 
 
     private RadialGradient createRadialGradient() {
